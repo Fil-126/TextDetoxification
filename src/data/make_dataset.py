@@ -59,14 +59,10 @@ class DetoxDataset(torch.utils.data.Dataset):
             }
 
 
-def make_datasets(data_path="data/interim/filtered.tsv", sep="\t", tokenizer=None, max_len=256, train_val_test=[0.7, 0.1, 0.2]):
-    global train_dataset, val_dataset, test_dataset
-    
+def make_dataset(data_path="data/interim/filtered.tsv", sep="\t", tokenizer=None, max_len=256, train_val_test=[0.7, 0.1, 0.2]):
     data = pd.read_csv(data_path, sep=sep)
 
     dataset = DetoxDataset(data, tokenizer=tokenizer, max_len=max_len)
 
-    train_dataset, val_dataset, test_dataset = torch.utils.data.random_split(dataset, train_val_test)
-
-    return train_dataset, val_dataset, test_dataset
+    return dataset
 
