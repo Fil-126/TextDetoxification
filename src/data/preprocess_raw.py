@@ -31,7 +31,7 @@ if __name__ == "__main__":
                         help= "path to raw data")
     parser.add_argument("--dst",
                         dest= "save_path",
-                        default= "data/raw/",
+                        default= "data/interim/",
                         help= "save path (default: data/interim/)")
     parser.add_argument("--sep",
                         dest= "sep",
