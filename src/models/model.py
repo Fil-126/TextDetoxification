@@ -12,6 +12,8 @@ from transformers import (
     get_linear_schedule_with_warmup
 )
 
+from src.data.make_dataset import make_dataset
+
 
 class DetoxModel(pl.LightningModule):
     def __init__(self, hparams):
@@ -20,9 +22,6 @@ class DetoxModel(pl.LightningModule):
 
         self.model = T5ForConditionalGeneration.from_pretrained(hparams.model_name_or_path)
         self.tokenizer = T5Tokenizer.from_pretrained(hparams.tokenizer_name_or_path)
-
-        self.train_dataset = hparams.train_dataset
-        self.val_dataset = hparams.val_dataset
 
 
     def is_logger(self):
@@ -114,7 +113,8 @@ class DetoxModel(pl.LightningModule):
 
 
     def train_dataloader(self):
-        dataloader = DataLoader(self.train_dataset, batch_size=self.hparams.train_batch_size, drop_last=True, shuffle=True,
+        train_dataset = make_dataset("data/interim/train.csv")
+        dataloader = DataLoader(train_dataset, batch_size=self.hparams.train_batch_size, drop_last=True, shuffle=True,
                                 num_workers=4)
         t_total = (
                 (len(dataloader.dataset) // (self.hparams.train_batch_size * max(1, self.hparams.n_gpu)))
@@ -129,5 +129,6 @@ class DetoxModel(pl.LightningModule):
 
 
     def val_dataloader(self):
-        return DataLoader(self.val_dataset, batch_size=self.hparams.eval_batch_size, num_workers=4)
+        val_dataset = make_dataset("data/interim/val.csv")
+        return DataLoader(val_dataset, batch_size=self.hparams.eval_batch_size, num_workers=4)
 
