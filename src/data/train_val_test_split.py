@@ -1,9 +1,12 @@
 import pandas as pd
 import numpy as np
+import random
 import argparse
 
 
 def split(data_path="data/interim/filtered.tsv", sep="\t", ratio=[0.7, 0.1, 0.2]):
+    random.seed(420)
+    np.random.seed(420)
     data = pd.read_csv(data_path, sep=sep)[["reference", "translation"]]
     n = len(data)
 
