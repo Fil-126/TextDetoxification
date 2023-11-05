@@ -18,8 +18,8 @@ def train():
     training_args = Seq2SeqTrainingArguments(
         output_dir="models/t5_detox",
         evaluation_strategy="epoch",
-        per_device_train_batch_size=16,
-        per_device_eval_batch_size=16,
+        per_device_train_batch_size=8,
+        per_device_eval_batch_size=8,
         max_steps=1000,
         save_steps=100,
         eval_steps=100,
